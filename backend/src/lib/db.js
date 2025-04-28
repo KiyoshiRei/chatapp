@@ -1,71 +1,13 @@
-const mongoose = require("mongoose")
-const Schema  = mongoose.Schema;
-const ObjectId = mongoose.ObjectId;
+import mongoose from "mongoose"
+import dotenv from "dotenv"
+dotenv.config();
 
-const userSchema = new Schema({
-    email:{
-        type: String,
-        unique: true,
-        required: true
-    },
-    name: {
-        type: String,
-        required: true
-    },
-    password: {
-        type: String,
-        required: true
-    },
-    isOnline: {
-        type:Boolean,
-        default:false
+export const connectDB = async() => {
+    try{
+        const conn = await mongoose.connect(process.env.MONGODB_URI);
+        console.log("Database connected"+ conn.connection.host);
+    }catch(error)
+    {
+        console.log("Error connecting to the Database",error);
     }
-
-},{timestamps: true})
-
-const chatSchema = new Schema({
-    isGroupChat: {
-        type: Boolean,
-        default: false
-    },
-    chatName: {
-        type:String,
-        required: function(){
-            return this.isGroupChat;
-        }
-    },
-    participants: [
-        {
-            type: ObjectId,
-            ref:"User"
-        }
-    ],
-    latestMessage: {
-        type:ObjectId,
-        ref: "Message"
-    }
-},{timestamps:true})
-
-
-const messageSchema = new Schema ({
-    sender: {
-        type: ObjectId,
-        ref: "User",
-        required: true
-    },
-    chat: {
-        type: ObjectId,
-        ref:"Chat",
-        required:true
-    },
-    content:{
-        type:String,
-        required: true
-    }
-},{timestamps: true})
-
-User = module.model("User",userSchema);
-Chat = module.model("Chat",chatSchema);
-Message = module.model("Message",messageSchema);
-
-module.exports = { User, Chat, Message };
+}
