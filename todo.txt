@@ -1,6 +1,0 @@
-## TODO 
-
-April 25
-- learn how to host mongodb locally 
-- create schemas
-
