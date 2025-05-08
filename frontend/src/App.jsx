@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import HomePage from "./pages/HomePage.jsx"
 import SignUpPage from "./pages/SignUpPage.jsx"
 import SignInPage from "./pages/SignInPage.jsx"
@@ -11,6 +11,13 @@ import { useAuthStore } from './store/useAuthStore.js'
 
 const App = () => {
   const {authUser,checkAuth} = useAuthStore();
+
+  useEffect(()=>{
+    checkAuth()
+  },[checkAuth]);
+  
+  console.log(authUser);
+
   return (
     <div>
        
