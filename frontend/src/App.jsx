@@ -5,7 +5,7 @@ import SignInPage from "./pages/SignInPage.jsx"
 import SettingsPage from "./pages/SettingsPage.jsx"
 import ProfilePage from "./pages/ProfilePage.jsx"
 
-import { Routes, Route } from "react-router-dom"
+import { Routes, Route, Navigate } from "react-router-dom"
 import Navbar from "./components/Navbar.jsx"
 import { useAuthStore } from './store/useAuthStore.js'
 import {Loader} from "lucide-react";
@@ -32,11 +32,11 @@ const App = () => {
        <Navbar />
 
        <Routes>
-          <Route path='/' element={<HomePage />}/>
-          <Route path='/signup' element={<SignUpPage />}/>
-          <Route path='/signin' element={<SignInPage />}/>
+          <Route path='/' element={authUser?<HomePage />:<Navigate to="/signin" />}/>
+          <Route path='/signup' element={!authUser ? <SignUpPage />: <Navigate to="/" />}/>
+          <Route path='/signin' element={!authUser ? <SignInPage />: <Navigate to="/" />}/>
           <Route path='/settings' element={<SettingsPage />}/>
-          <Route path='/profile' element={<ProfilePage />}/>
+          <Route path='/profile' element={authUser?<ProfilePage />:<Navigate to="/signin" />}/>
        </Routes>
     </div>
   );
